@@ -1,0 +1,684 @@
+    <!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Dara Catering | Admin mode</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=block" rel="stylesheet" />
+	<style>
+		:root {
+			--bg: #cfcfd2;
+			--panel: #f6f2eb;
+			--panel-2: #efe7dd;
+			--brand: #c96d1d;
+			--brand-dark: #8b4212;
+			--text: #161616;
+			--muted: #6c665f;
+			--line: rgba(28, 20, 12, 0.12);
+			--shadow: 0 18px 36px rgba(0, 0, 0, 0.12);
+			--radius-xl: 28px;
+			--radius-lg: 22px;
+			--radius-md: 16px;
+			--success: #157f47;
+			--warning: #b87408;
+			--danger: #b7372b;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			margin: 0;
+			font-family: "Manrope", sans-serif;
+			color: var(--text);
+			background:
+				radial-gradient(900px 500px at 18% 6%, #e6dfd2 0%, transparent 64%),
+				radial-gradient(900px 500px at 110% 0%, #d8cbbd 0%, transparent 60%),
+				var(--bg);
+		}
+
+		.dashboard {
+			display: grid;
+			grid-template-columns: 280px 1fr;
+			min-height: 100vh;
+		}
+
+		.sidebar {
+			background: linear-gradient(180deg, #b95f18 0%, #943d0d 100%);
+			color: white;
+			padding: 22px 18px;
+			position: sticky;
+			top: 0;
+			height: 100vh;
+			box-shadow: 10px 0 24px rgba(85, 37, 6, 0.2);
+		}
+
+		.sidebar .brand {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			text-decoration: none;
+			color: inherit;
+			margin-bottom: 22px;
+		}
+
+		.sidebar .brand img {
+			width: 170px;
+			height: auto;
+			display: block;
+		}
+
+		.admin-chip {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 8px 12px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.16);
+			font-weight: 800;
+			font-size: 0.88rem;
+			margin-bottom: 20px;
+		}
+
+		.nav-group {
+			display: grid;
+			gap: 8px;
+		}
+
+		.nav-group a {
+			text-decoration: none;
+			color: #fff5e8;
+			padding: 12px 14px;
+			border-radius: 14px;
+			font-weight: 700;
+			transition: 0.2s ease;
+		}
+
+		.nav-group a:hover,
+		.nav-group a.active {
+			background: rgba(255, 255, 255, 0.16);
+			color: white;
+		}
+
+		.sidebar-card {
+			margin-top: 20px;
+			padding: 16px;
+			border-radius: 18px;
+			background: rgba(255, 255, 255, 0.12);
+			border: 1px solid rgba(255, 255, 255, 0.16);
+		}
+
+		.sidebar-card h3,
+		.sidebar-card p {
+			margin: 0;
+		}
+
+		.sidebar-card p {
+			margin-top: 6px;
+			color: rgba(255, 255, 255, 0.82);
+			font-size: 0.92rem;
+			line-height: 1.5;
+		}
+
+		.content {
+			padding: 22px clamp(18px, 2.8vw, 34px) 34px;
+		}
+
+		.topbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 18px;
+			margin-bottom: 22px;
+		}
+
+		.hero-title h1 {
+			margin: 0;
+			font-size: clamp(1.6rem, 3vw, 2.7rem);
+			letter-spacing: -0.03em;
+		}
+
+		.hero-title p {
+			margin: 6px 0 0;
+			color: var(--muted);
+		}
+
+		.top-actions {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.search {
+			position: relative;
+			min-width: 240px;
+		}
+
+		.search input {
+			width: 100%;
+			padding: 12px 14px 12px 40px;
+			border: 1px solid var(--line);
+			border-radius: 14px;
+			font: inherit;
+			background: rgba(255, 255, 255, 0.76);
+		}
+
+		.search::before {
+			content: "⌕";
+			position: absolute;
+			left: 14px;
+			top: 50%;
+			transform: translateY(-54%);
+			color: var(--brand-dark);
+			font-size: 1.1rem;
+		}
+
+		.profile {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 9px 12px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.7);
+			border: 1px solid var(--line);
+		}
+
+		.profile img {
+			width: 38px;
+			height: 38px;
+			border-radius: 50%;
+			object-fit: cover;
+		}
+
+		.profile strong,
+		.profile span {
+			display: block;
+			line-height: 1.2;
+		}
+
+		.profile span {
+			font-size: 0.82rem;
+			color: var(--muted);
+		}
+
+		.metrics {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 16px;
+			margin-bottom: 18px;
+		}
+
+		.metric {
+			background: rgba(255, 255, 255, 0.72);
+			backdrop-filter: blur(8px);
+			border: 1px solid var(--line);
+			border-radius: var(--radius-lg);
+			padding: 18px;
+			box-shadow: var(--shadow);
+		}
+
+		.metric .label {
+			margin: 0 0 8px;
+			color: var(--muted);
+			font-size: 0.9rem;
+		}
+
+		.metric .value {
+			margin: 0;
+			font-size: 1.8rem;
+			font-weight: 800;
+			letter-spacing: -0.04em;
+		}
+
+		.metric .delta {
+			margin: 10px 0 0;
+			font-size: 0.85rem;
+			font-weight: 700;
+			color: var(--success);
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: 1.5fr 1fr;
+			gap: 18px;
+		}
+
+		.panel {
+			background: rgba(255, 255, 255, 0.74);
+			border: 1px solid var(--line);
+			border-radius: var(--radius-xl);
+			padding: 20px;
+			box-shadow: var(--shadow);
+		}
+
+		.panel h2 {
+			margin: 0 0 14px;
+			font-size: 1.2rem;
+		}
+
+		.subtle {
+			margin: -6px 0 14px;
+			color: var(--muted);
+			font-size: 0.92rem;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			padding: 12px 10px;
+			text-align: left;
+			border-bottom: 1px solid var(--line);
+			font-size: 0.94rem;
+		}
+
+		th {
+			font-size: 0.82rem;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			color: var(--muted);
+		}
+
+		.status {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 7px 10px;
+			border-radius: 999px;
+			font-size: 0.82rem;
+			font-weight: 800;
+		}
+
+		.status::before {
+			content: "";
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+		}
+
+		.status.pending {
+			background: rgba(184, 116, 8, 0.12);
+			color: var(--warning);
+		}
+
+		.status.pending::before {
+			background: var(--warning);
+		}
+
+		.status.process {
+			background: rgba(21, 127, 71, 0.12);
+			color: var(--success);
+		}
+
+		.status.process::before {
+			background: var(--success);
+		}
+
+		.status.cancel {
+			background: rgba(183, 55, 43, 0.12);
+			color: var(--danger);
+		}
+
+		.status.cancel::before {
+			background: var(--danger);
+		}
+
+		.product-list {
+			display: grid;
+			gap: 12px;
+		}
+
+		.product {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 10px;
+			align-items: center;
+			padding: 14px;
+			border-radius: 18px;
+			background: linear-gradient(180deg, #fff 0%, #f8f4ef 100%);
+			border: 1px solid var(--line);
+		}
+
+		.product h3,
+		.product p {
+			margin: 0;
+		}
+
+		.product p {
+			color: var(--muted);
+			font-size: 0.9rem;
+			margin-top: 4px;
+		}
+
+		.tag {
+			display: inline-flex;
+			align-items: center;
+			padding: 7px 10px;
+			border-radius: 999px;
+			background: rgba(201, 109, 29, 0.12);
+			color: var(--brand-dark);
+			font-size: 0.82rem;
+			font-weight: 800;
+		}
+
+		.chart {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			gap: 10px;
+			align-items: end;
+			height: 220px;
+			padding-top: 10px;
+		}
+
+		.bar-wrap {
+			display: grid;
+			gap: 8px;
+			justify-items: center;
+		}
+
+		.bar {
+			width: 100%;
+			min-height: 32px;
+			border-radius: 16px 16px 8px 8px;
+			background: linear-gradient(180deg, #f1b56a 0%, #c96d1d 100%);
+			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.36);
+		}
+
+		.bar-wrap span {
+			font-size: 0.8rem;
+			color: var(--muted);
+			font-weight: 700;
+		}
+
+		.notice {
+			display: grid;
+			gap: 12px;
+		}
+
+		.notice-item {
+			padding: 14px 16px;
+			border-radius: 16px;
+			background: linear-gradient(180deg, #fff 0%, #f4efe8 100%);
+			border: 1px solid var(--line);
+		}
+
+		.notice-item h3,
+		.notice-item p {
+			margin: 0;
+		}
+
+		.notice-item p {
+			margin-top: 4px;
+			color: var(--muted);
+			font-size: 0.9rem;
+			line-height: 1.5;
+		}
+
+		.footer-actions {
+			display: flex;
+			justify-content: space-between;
+			gap: 12px;
+			flex-wrap: wrap;
+			margin-top: 18px;
+		}
+
+		.btn {
+			border: 0;
+			border-radius: 14px;
+			padding: 12px 14px;
+			font: inherit;
+			font-weight: 800;
+			cursor: pointer;
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.btn-primary {
+			background: var(--brand);
+			color: white;
+		}
+
+		.btn-ghost {
+			background: rgba(255, 255, 255, 0.72);
+			color: var(--text);
+			border: 1px solid var(--line);
+		}
+
+		@media (max-width: 1080px) {
+			.dashboard {
+				grid-template-columns: 1fr;
+			}
+
+			.sidebar {
+				height: auto;
+				position: relative;
+			}
+
+			.grid,
+			.metrics {
+				grid-template-columns: 1fr 1fr;
+			}
+		}
+
+		@media (max-width: 720px) {
+			.topbar,
+			.footer-actions {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.search {
+				min-width: 100%;
+			}
+
+			.metrics,
+			.grid,
+			.chart {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="dashboard">
+		<aside class="sidebar">
+			<a class="brand" href="PJBL.html" aria-label="Kembali ke halaman user">
+				<img src="logofigma.jpeg" alt="Logo Dara Catering" />
+			</a>
+			<div class="admin-chip">Admin Panel</div>
+			<nav class="nav-group" aria-label="Navigasi admin">
+				<a class="active" href="#overview">Overview</a>
+				<a href="#orders">Orders</a>
+				<a href="#products">Products</a>
+				<a href="#revenue">Revenue</a>
+				<a href="#notes">Notes</a>
+			</nav>
+			<div class="sidebar-card">
+				<h3>Quick Action</h3>
+				<p>Buka order masuk, update status, dan cek stok menu harian dari satu layar.</p>
+			</div>
+		</aside>
+
+		<main class="content">
+			<header class="topbar" id="overview">
+				<div class="hero-title">
+					<h1>Dashboard Admin Dara Catering</h1>
+					<p>Monitoring pesanan, menu, dan performa penjualan harian.</p>
+				</div>
+				<div class="top-actions">
+					<label class="search" for="adminSearch">
+						<input id="adminSearch" type="text" placeholder="Cari order / menu" />
+					</label>
+					<div class="profile">
+						<img src="pfp.jpeg" alt="Foto admin" />
+						<div>
+							<strong>Admin Dara</strong>
+							<span>Super  Admin/Owner</span>
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<section class="metrics" aria-label="Ringkasan admin">
+				<article class="metric">
+					<p class="label">Orders Hari Ini</p>
+					<p class="value">0</p>
+					<p class="delta">+0% dari kemarin</p>
+				</article>
+				<article class="metric">
+					<p class="label">Pending</p>
+					<p class="value">0</p>
+					<p class="delta">Butuh konfirmasi</p>
+				</article>
+				<article class="metric">
+					<p class="label">Pendapatan</p>
+					<p class="value">Rp 0 </p>
+					<p class="delta">Naik 0%</p>
+				</article>
+				<article class="metric">
+					<p class="label">Menu Aktif</p>
+					<p class="value">0</p>
+					<p class="delta">0 item</p>
+				</article>
+			</section>
+
+			<section class="grid">
+				<div class="panel" id="orders">
+					<h2>Recent Orders</h2>
+					<p class="subtle">Order masuk terbaru dengan status operasional.</p>
+					<table>
+						<thead>
+							<tr>
+								<th>Order</th>
+								<th>Customer</th>
+								<th>Menu</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>#DC-2401</td>
+								<td>PJBL6</td>
+								<td>Buffet Gold</td>
+								<td><span class="status process">Processing</span></td>
+							</tr>
+							<tr>
+								<td>#DC-2402</td>
+								<td>PJBL6</td>
+								<td>Nasi Box Premium</td>
+								<td><span class="status pending">Pending</span></td>
+							</tr>
+							<tr>
+								<td>#DC-2403</td>
+								<td>PJBL6</td>
+								<td>Buffet Silver</td>
+								<td><span class="status process">Ready</span></td>
+							</tr>
+							<tr>
+								<td>#DC-2404</td>
+								<td>PJBL6</td>
+								<td>Gulai Rempah</td>
+								<td><span class="status cancel">Cancel</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="panel" id="notes">
+					<h2>Admin Notes</h2>
+					<p class="subtle">Note</p>
+					<div class="notice">
+						<div class="notice-item">
+							<h3>PJBL6</h3>
+							<p>PJBL6</p>
+						</div>
+						<div class="notice-item">
+							<h3>PJBL6</h3>
+							<p>PJBL6.</p>
+						</div>
+						<div class="notice-item">
+							<h3>PJBL6</h3>
+							<p>PJBL6</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="grid" style="margin-top: 18px;">
+				<div class="panel" id="products">
+					<h2>Product Management</h2>
+					<p class="subtle">Menu yang paling sering dipesan dan perlu dipantau stoknya.</p>
+					<div class="product-list">
+						<div class="product">
+							<div>
+								<h3>Buffet Silver</h3>
+								<p>Rp 25.000 / porsi</p>
+							</div>
+							<span class="tag">Active</span>
+						</div>
+						<div class="product">
+							<div>
+								<h3>Buffet Gold</h3>
+								<p>Rp 35.000 / porsi</p>
+							</div>
+							<span class="tag">Top Seller</span>
+						</div>
+						<div class="product">
+							<div>
+								<h3>Gulai Rempah</h3>
+								<p>Rp 32.000 / porsi</p>
+							</div>
+							<span class="tag">Low Stock</span>
+						</div>
+						<div class="product">
+							<div>
+								<h3>Nasi Box Premium</h3>
+								<p>Rp 30.000 / porsi</p>
+							</div>
+							<span class="tag">Active</span>
+						</div>
+					</div>
+					<div class="footer-actions">
+						<a class="btn btn-ghost" href="PJBL.html">Kembali ke User</a>
+						<button class="btn btn-primary" type="button">Tambah Menu Baru</button>
+					</div>
+				</div>
+
+				<div class="panel" id="revenue">
+					<h2>Weekly Revenue</h2>
+					<p class="subtle">Ringkasan penjualan 7 hari terakhir.</p>
+					<div class="chart" aria-label="Grafik pendapatan mingguan">
+						<div class="bar-wrap"><div class="bar" style="height: 48%"></div><span>Sen</span></div>
+						<div class="bar-wrap"><div class="bar" style="height: 64%"></div><span>Sel</span></div>
+						<div class="bar-wrap"><div class="bar" style="height: 56%"></div><span>Rab</span></div>
+						<div class="bar-wrap"><div class="bar" style="height: 82%"></div><span>Kam</span></div>
+						<div class="bar-wrap"><div class="bar" style="height: 70%"></div><span>Jum</span></div>
+						<div class="bar-wrap"><div class="bar" style="height: 92%"></div><span>Sab</span></div>
+						<div class="bar-wrap"><div class="bar" style="height: 76%"></div><span>Min</span></div>
+					</div>
+					<div class="footer-actions" style="margin-top: 20px;">
+						<div>
+							<strong>Peak day:</strong> Sabtu
+						</div>
+						<div>
+							<strong>Best menu:</strong> Buffet Gold
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+</body>
+</html>

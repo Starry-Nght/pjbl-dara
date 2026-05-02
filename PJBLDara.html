@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Dara Catering </title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=block" rel="stylesheet" />
+	<style>
+		:root {
+			--bg: #d1d1d3;
+			--surface: #f4f4f4;
+			--surface-2: #ececec;
+			--brand: #c96d1d;
+			--text: #101010;
+			--muted: #5e5e5e;
+			--line: #d6d6d6;
+			--accent: #8b2f16;
+			--good: #0a7b41;
+			--radius-lg: 26px;
+			--radius-md: 18px;
+			--radius-sm: 12px;
+			--shadow: 0 14px 35px rgba(0, 0, 0, 0.14);
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			margin: 0;
+			font-family: "Manrope", sans-serif;
+			color: var(--text);
+			background:
+				radial-gradient(1000px 500px at -20% 10%, #ece2d4 0%, transparent 70%),
+				radial-gradient(900px 450px at 120% -10%, #dbd2c8 0%, transparent 70%),
+				var(--bg);
+		}
+
+		.navbar {
+			position: sticky;
+			top: 0;
+			z-index: 20;
+			background: var(--brand);
+			box-shadow: 0 8px 20px rgba(98, 49, 8, 0.3);
+		}
+
+		.nav-inner {
+			max-width: 1240px;
+			margin: 0 auto;
+			padding: 10px clamp(14px, 3vw, 40px);
+			display: grid;
+			grid-template-columns: auto 1fr auto;
+			align-items: center;
+			gap: 18px;
+		}
+
+		.brand {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			text-decoration: none;
+		}
+
+		.brand img {
+			height: 62px;
+			width: auto;
+			display: block;
+		}
+
+		.nav-menu {
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+
+		.nav-menu a {
+			text-decoration: none;
+			color: #fff3e0;
+			font-weight: 700;
+			font-size: 0.92rem;
+			padding: 9px 12px;
+			border-radius: 999px;
+			transition: 0.2s ease;
+		}
+
+		.nav-menu a:hover {
+			color: white;
+			background: rgba(255, 255, 255, 0.16);
+		}
+
+		.nav-tools {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.search-wrap {
+			position: relative;
+			min-width: 220px;
+		}
+
+		.search-wrap input {
+			width: 100%;
+			border: 0;
+			outline: none;
+			padding: 11px 14px 11px 38px;
+			border-radius: 11px;
+			font: inherit;
+		}
+
+		.search-wrap::before {
+			content: "⌕";
+			position: absolute;
+			left: 12px;
+			top: 50%;
+			transform: translateY(-56%);
+			font-size: 1.15rem;
+			color: #7a3f0d;
+		}
+
+		.badge-cart {
+			background: white;
+			color: var(--accent);
+			border-radius: 999px;
+			padding: 8px 14px;
+			font-size: 0.88rem;
+			font-weight: 800;
+		}
+
+		.page {
+			max-width: 1240px;
+			margin: 26px auto 60px;
+			padding: 0 clamp(14px, 3vw, 40px);
+			display: grid;
+			grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+			gap: 22px;
+		}
+
+		.main-col,
+		.side-col {
+			display: grid;
+			gap: 22px;
+			align-content: start;
+		}
+
+		.panel {
+			background: var(--surface);
+			border-radius: var(--radius-lg);
+			padding: 20px;
+			box-shadow: var(--shadow);
+		}
+
+		.hero-grid {
+			display: grid;
+			grid-template-columns: 0.9fr 2fr 1.2fr;
+			grid-template-rows: 190px 190px;
+			gap: 14px;
+		}
+
+		.hero-item {
+			border-radius: 24px;
+			overflow: hidden;
+			animation: rise 0.7s ease both;
+		}
+
+		.hero-item:nth-child(2) { animation-delay: 0.1s; }
+		.hero-item:nth-child(3) { animation-delay: 0.2s; }
+		.hero-item:nth-child(4) { animation-delay: 0.3s; }
+
+		.hero-item img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+
+		.hero-a,
+		.hero-b {
+			grid-row: span 2;
+		}
+
+		h1,
+		h2,
+		h3 {
+			margin: 0;
+		}
+
+		.page-title {
+			font-size: clamp(1.7rem, 3vw, 2.8rem);
+			letter-spacing: -0.03em;
+			margin-bottom: 6px;
+		}
+
+		.page-desc {
+			margin: 0;
+			line-height: 1.6;
+			color: var(--muted);
+		}
+
+		.section-title {
+			font-size: 1.35rem;
+			margin-bottom: 14px;
+		}
+
+		.menu-row {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(160px, 1fr));
+			gap: 12px;
+		}
+
+		.card {
+			background: var(--surface-2);
+			border-radius: var(--radius-md);
+			overflow: hidden;
+		}
+
+		.card img {
+			width: 100%;
+			height: 142px;
+			object-fit: cover;
+			display: block;
+		}
+
+		.card-body {
+			padding: 10px 12px 12px;
+		}
+
+		.card h3 {
+			font-size: 1rem;
+			margin-bottom: 6px;
+		}
+
+		.price {
+			font-weight: 800;
+			color: var(--accent);
+			margin: 0;
+			font-size: 0.92rem;
+		}
+
+		.user-head {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			margin-bottom: 12px;
+		}
+
+		.avatar {
+			width: 58px;
+			height: 58px;
+			border-radius: 50%;
+			border: 3px solid #fff;
+			object-fit: cover;
+			box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+		}
+
+		.user-meta p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.9rem;
+		}
+
+		.kpi {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 8px;
+		}
+
+		.kpi div {
+			background: white;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			padding: 9px;
+			text-align: center;
+		}
+
+		.kpi strong {
+			display: block;
+			font-size: 1rem;
+		}
+
+		.kpi span {
+			font-size: 0.76rem;
+			color: var(--muted);
+		}
+
+		.login-form,
+		.checkout-form {
+			display: grid;
+			gap: 10px;
+		}
+
+		label {
+			font-size: 0.88rem;
+			font-weight: 700;
+		}
+
+		input,
+		select,
+		textarea {
+			width: 100%;
+			padding: 10px 11px;
+			border-radius: 10px;
+			border: 1px solid #cccccc;
+			font: inherit;
+			background: white;
+		}
+
+		.helper {
+			font-size: 0.83rem;
+			color: var(--muted);
+			margin: 0;
+		}
+
+		.btn {
+			border: 0;
+			border-radius: 10px;
+			padding: 11px 13px;
+			font: inherit;
+			font-weight: 800;
+			cursor: pointer;
+		}
+
+		.btn-primary {
+			background: var(--brand);
+			color: #fff;
+		}
+
+		.btn-dark {
+			background: #212121;
+			color: #fff;
+		}
+
+		.btn-row {
+			display: grid;
+			grid-template-columns: 1fr auto auto;
+			gap: 8px;
+			align-items: center;
+		}
+
+		.qty {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		.qty button {
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			border: 1px solid #bdbdbd;
+			background: #fff;
+			cursor: pointer;
+		}
+
+		.cart-list {
+			display: grid;
+			gap: 9px;
+		}
+
+		.cart-item {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 10px;
+			align-items: center;
+			background: white;
+			padding: 10px;
+			border-radius: 12px;
+			border: 1px solid var(--line);
+		}
+
+		.cart-item h4 {
+			margin: 0 0 4px;
+			font-size: 0.95rem;
+		}
+
+		.cart-item p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.82rem;
+		}
+
+		.summary {
+			margin-top: 12px;
+			border-top: 1px dashed #bcbcbc;
+			padding-top: 10px;
+			display: grid;
+			gap: 6px;
+		}
+
+		.summary div {
+			display: flex;
+			justify-content: space-between;
+			font-size: 0.92rem;
+		}
+
+		.summary .total {
+			font-size: 1.03rem;
+			font-weight: 800;
+		}
+
+		#checkoutStatus {
+			margin: 8px 0 0;
+			font-weight: 700;
+			color: var(--good);
+			font-size: 0.9rem;
+			min-height: 1.2em;
+		}
+
+		@keyframes rise {
+			from {
+				opacity: 0;
+				transform: translateY(10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@media (max-width: 1080px) {
+			.page {
+				grid-template-columns: 1fr;
+			}
+
+			.menu-row {
+				grid-template-columns: repeat(2, minmax(160px, 1fr));
+			}
+		}
+
+		@media (max-width: 740px) {
+			.nav-inner {
+				grid-template-columns: 1fr;
+				justify-items: stretch;
+			}
+
+			.brand {
+				justify-content: center;
+			}
+
+			.nav-tools {
+				flex-direction: column;
+			}
+
+			.search-wrap {
+				min-width: 100%;
+			}
+
+			.hero-grid {
+				grid-template-columns: 1fr;
+				grid-template-rows: 220px 220px 140px 140px;
+			}
+
+			.hero-a,
+			.hero-b {
+				grid-row: auto;
+			}
+
+			.menu-row {
+				grid-template-columns: 1fr;
+			}
+
+			.btn-row {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar" id="navbar">
+		<div class="nav-inner">
+			<a class="brand" href="#navbar" aria-label="Beranda Dara Catering">
+				<img src="logofigma.jpeg" alt="Logo Dara Catering dari Figma" />
+			</a>
+
+			<div class="nav-menu">
+				<a href="#deskripsi">Deskripsi</a>
+				<a href="#menu">Menu</a>
+				<a href="#login">Login</a>
+				<a href="#profil">Profil User</a>
+				<a href="#cart">Cart</a>
+				<a href="#checkout">Checkout</a>
+				<a href="admin.html">Admin</a>
+			</div>
+
+			<div class="nav-tools">
+				<label class="search-wrap" for="searchMenu">
+					<input id="searchMenu" type="text" placeholder="Cari paket catering" />
+				</label>
+				<div class="badge-cart">Keranjang: <span id="cartCount">0</span></div>
+			</div>
+		</div>
+	</nav>
+
+	<main class="page">
+		<section class="main-col">
+			<section class="panel" aria-label="Hero layout dari desain">
+				<div class="hero-grid">
+					<article class="hero-item hero-a">
+						<img src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=900&q=80" alt="Croquette isi keju dan daging" />
+					</article>
+					<article class="hero-item hero-b">
+						<img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=1400&q=80" alt="Meja buffet catering" />
+					</article>
+					<article class="hero-item">
+						<img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=900&q=80" alt="Gulai ayam kuah kuning" />
+					</article>
+					<article class="hero-item">
+						<img src="https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?auto=format&fit=crop&w=1000&q=80" alt="Prasmanan siap saji" />
+					</article>
+				</div>
+			</section>
+
+			<section class="panel" id="deskripsi">
+				<h1 class="page-title">Pesan Catering Lebih Cepat dan Rapi</h1>
+				<p class="page-desc">kelompok pjbl siap bersinar di pameran boss</p>
+			</section>
+
+			<section class="panel" id="menu">
+				<h2 class="section-title">Menu Pilihan</h2>
+				<div class="menu-row">
+					<article class="card">
+						<img src="https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?auto=format&fit=crop&w=900&q=80" alt="Buffet Silver" />
+						<div class="card-body">
+							<h3>Buffet Silver</h3>
+							<p class="price">Rp 25.000 / porsi</p>
+						</div>
+					</article>
+					<article class="card">
+						<img src="https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?auto=format&fit=crop&w=900&q=80" alt="Buffet Gold" />
+						<div class="card-body">
+							<h3>Buffet Gold</h3>
+							<p class="price">Rp 35.000 / porsi</p>
+						</div>
+					</article>
+					<article class="card">
+						<img src="https://images.unsplash.com/photo-1596797038530-2c107aa0f22b?auto=format&fit=crop&w=900&q=80" alt="Gulai Rempah" />
+						<div class="card-body">
+							<h3>Gulai Rempah</h3>
+							<p class="price">Rp 32.000 / porsi</p>
+						</div>
+					</article>
+					<article class="card">
+						<img src="https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=900&q=80" alt="Nasi Box Premium" />
+						<div class="card-body">
+							<h3>Nasi Box Premium</h3>
+							<p class="price">Rp 30.000 / porsi</p>
+						</div>
+					</article>
+				</div>
+			</section>
+		</section>
+
+		<aside class="side-col">
+			<section class="panel" id="login">
+				<h2 class="section-title">Sesi Login</h2>
+				<form class="login-form">
+					<div>
+						<label for="email">Email</label>
+						<input id="email" type="email" placeholder="nama@email.com" />
+					</div>
+					<div>
+						<label for="password">Password</label>
+						<input id="password" type="password" placeholder="Masukkan password" />
+					</div>
+					<button class="btn btn-primary" type="button">Masuk</button>
+				</form>
+				<p class="helper">Demo statis UI, belum terhubung backend autentikasi.</p>
+			</section>
+
+			<section class="panel" id="profil">
+				<h2 class="section-title">Profil User</h2>
+				<div class="user-head">
+					<img class="avatar" src="pfp.jpeg" alt="Foto profil user" />
+					<div class="user-meta">
+						<h3>PJBL6</h3>
+						<p>PJBL6@gmail.com</p>
+					</div>
+				</div>
+				<div class="kpi">
+					<div><strong>0</strong><span>Order</span></div>
+					<div><strong>5.0</strong><span>Rating</span></div>
+					<div><strong>Status</strong><span>Admin</span></div>
+				</div>
+			</section>
+
+			<section class="panel" id="cart">
+				<h2 class="section-title">Cart</h2>
+				<div class="cart-list">
+					<article class="cart-item" data-price="25000">
+						<div>
+							<h4>Buffet Silver</h4>
+							<p>Rp 25.000 / porsi</p>
+						</div>
+						<div class="qty">
+							<button type="button" class="decrease">-</button>
+							<span class="qty-value">1</span>
+							<button type="button" class="increase">+</button>
+						</div>
+					</article>
+					<article class="cart-item" data-price="32000">
+						<div>
+							<h4>Gulai Rempah</h4>
+							<p>Rp 32.000 / porsi</p>
+						</div>
+						<div class="qty">
+							<button type="button" class="decrease">-</button>
+							<span class="qty-value">1</span>
+							<button type="button" class="increase">+</button>
+						</div>
+					</article>
+				</div>
+
+				<div class="summary">
+					<div><span>Subtotal</span><strong id="subtotal">Rp 57.000</strong></div>
+					<div><span>Biaya kirim</span><strong>Rp 10.000</strong></div>
+					<div class="total"><span>Total</span><strong id="grandTotal">Rp 67.000</strong></div>
+				</div>
+			</section>
+
+			<section class="panel" id="checkout">
+				<h2 class="section-title">Checkout</h2>
+				<form class="checkout-form" id="checkoutForm">
+					<div>
+						<label for="alamat">Alamat Pengiriman</label>
+						<textarea id="alamat" rows="3" placeholder="Jl. Contoh No. 12, Kota..."></textarea>
+					</div>
+					<div>
+						<label for="metode">Metode Pembayaran</label>
+						<select id="metode">
+							<option>Transfer Bank</option>
+							<option>QRIS</option>
+							<option>COD</option>
+						</select>
+					</div>
+					<div class="btn-row">
+						<span class="helper">Pastikan data sudah benar.</span>
+						<button class="btn btn-dark" type="reset">Reset</button>
+						<button class="btn btn-primary" type="submit">Bayar Sekarang</button>
+					</div>
+				</form>
+				<p id="checkoutStatus"></p>
+			</section>
+		</aside>
+	</main>
+
+	<script>
+		const toRupiah = (value) => `Rp ${value.toLocaleString("id-ID")}`;
+		const shippingCost = 10000;
+
+		const cartItems = Array.from(document.querySelectorAll(".cart-item"));
+		const subtotalEl = document.getElementById("subtotal");
+		const grandTotalEl = document.getElementById("grandTotal");
+		const cartCountEl = document.getElementById("cartCount");
+
+		function updateCartSummary() {
+			let subtotal = 0;
+			let totalQty = 0;
+
+			cartItems.forEach((item) => {
+				const price = Number(item.dataset.price);
+				const qty = Number(item.querySelector(".qty-value").textContent);
+				subtotal += price * qty;
+				totalQty += qty;
+			});
+
+			subtotalEl.textContent = toRupiah(subtotal);
+			grandTotalEl.textContent = toRupiah(subtotal + shippingCost);
+			cartCountEl.textContent = String(totalQty);
+		}
+
+		cartItems.forEach((item) => {
+			const qtyEl = item.querySelector(".qty-value");
+			const decreaseBtn = item.querySelector(".decrease");
+			const increaseBtn = item.querySelector(".increase");
+
+			decreaseBtn.addEventListener("click", () => {
+				const current = Number(qtyEl.textContent);
+				if (current > 1) {
+					qtyEl.textContent = String(current - 1);
+					updateCartSummary();
+				}
+			});
+
+			increaseBtn.addEventListener("click", () => {
+				const current = Number(qtyEl.textContent);
+				qtyEl.textContent = String(current + 1);
+				updateCartSummary();
+			});
+		});
+
+		document.getElementById("checkoutForm").addEventListener("submit", (event) => {
+			event.preventDefault();
+			document.getElementById("checkoutStatus").textContent = "Checkout berhasil disimpan. Tim kami akan menghubungi kamu untuk konfirmasi.";
+		});
+
+		updateCartSummary();
+	</script>
+</body>
+</html>

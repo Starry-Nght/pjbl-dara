@@ -1,0 +1,19 @@
+nohup: ignoring input
+127.0.0.1 - - [02/May/2026 11:24:11] "HEAD /PJBLDara.html HTTP/1.1" 200 -
+192.168.1.13 - - [02/May/2026 11:25:47] "GET /PJBLDara.html HTTP/1.1" 200 -
+192.168.1.13 - - [02/May/2026 11:25:47] "GET /logofigma.jpeg HTTP/1.1" 200 -
+192.168.1.13 - - [02/May/2026 11:25:47] "GET /pfp.jpeg HTTP/1.1" 200 -
+192.168.1.13 - - [02/May/2026 11:25:48] code 404, message File not found
+192.168.1.13 - - [02/May/2026 11:25:48] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.1.13 - - [02/May/2026 11:26:45] code 404, message File not found
+192.168.1.13 - - [02/May/2026 11:26:45] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.1.2 - - [02/May/2026 11:27:45] "GET /PJBLDara.html HTTP/1.1" 200 -
+192.168.1.2 - - [02/May/2026 11:27:47] "GET /logofigma.jpeg HTTP/1.1" 200 -
+192.168.1.2 - - [02/May/2026 11:27:47] "GET /pfp.jpeg HTTP/1.1" 200 -
+192.168.1.2 - - [02/May/2026 11:27:48] code 404, message File not found
+192.168.1.2 - - [02/May/2026 11:27:48] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.1.13 - - [02/May/2026 11:29:42] "HEAD /PJBLDara.html HTTP/1.1" 200 -
+192.168.1.2 - - [02/May/2026 11:31:45] code 400, message Bad HTTP/0.9 request type ('\\x16\\x03\\x01\\x02\\x00\\x01\\x00\\x01ü\\x03\\x03O\\x96de\\x11»¦E×Ð1iÄÊjÔï\\x1bFÔk»Õúb\\x01HK\\x8b\\x90\\x12í')
+192.168.1.2 - - [02/May/2026 11:31:45] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03O\x96de\x11»¦E×Ð1iÄÊjÔï\x1bFÔk»Õúb\x01HK\x8b\x90\x12í è\x7fBó4OÜ]×¿PÛ\x8fKn" 400 -
+192.168.1.2 - - [02/May/2026 11:32:30] code 400, message Bad request version ('À')
+192.168.1.2 - - [02/May/2026 11:32:30] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03ý)$N·æµs\x99?X³\x1b§\x96µE¬DÚ\x8aQM\x17z8""Vy\x90\x03 ²`\x08(h3\x03\x9eËme©-F z\x09¯\x87\x92\x08\x0b\x85Ê|\x90¢à?×\x1b\x05\x00"\x13\x01\x13\x02\x13\x03À+À,Ì©À/À0Ì¨
