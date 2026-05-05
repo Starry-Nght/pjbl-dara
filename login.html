@@ -368,7 +368,7 @@
 		</form>
 
 		<div class="signup-link">
-			Belum punya akun? <a href="/PJBLDara.html">Kembali ke halaman utama</a>
+			Belum punya akun? <a href="/home.html">Kembali ke halaman utama</a>
 		</div>
 	</div>
 
@@ -416,7 +416,7 @@
 					localStorage.setItem('user', JSON.stringify(data.user));
 					
 					// Redirect based on role
-					let redirectUrl = '/PJBLDara.html';
+					let redirectUrl = '/home.html';
 					if (data.user && data.user.role === 'admin') {
 						redirectUrl = '/ADMINDara.html';
 					}

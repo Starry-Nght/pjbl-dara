@@ -101,6 +101,55 @@
 			gap: 10px;
 		}
 
+		.profile-link {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			padding: 7px 10px 7px 8px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.14);
+			color: #fff3e0;
+			text-decoration: none;
+			font-weight: 700;
+			font-size: 0.9rem;
+			transition: 0.2s ease;
+		}
+
+		.profile-link:hover {
+			background: rgba(255, 255, 255, 0.24);
+			color: #fff;
+		}
+
+		.profile-badge {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.94);
+			color: var(--accent);
+			font-size: 0.8rem;
+			font-weight: 800;
+			flex: 0 0 auto;
+		}
+
+		.profile-copy {
+			display: grid;
+			line-height: 1.1;
+		}
+
+		.profile-copy span {
+			font-size: 0.74rem;
+			font-weight: 600;
+			color: rgba(255, 243, 224, 0.86);
+		}
+
+		.profile-copy strong {
+			font-size: 0.92rem;
+			color: #fff;
+		}
+
 		.search-wrap {
 			position: relative;
 			min-width: 220px;
@@ -846,6 +895,13 @@
 				<label class="search-wrap" for="searchMenu">
 					<input id="searchMenu" type="text" placeholder="Cari paket catering" />
 				</label>
+				<a class="profile-link" id="profileLink" href="/login.html" aria-label="Masuk atau lihat profil">
+					<span class="profile-badge" id="profileBadge">?</span>
+					<span class="profile-copy">
+						<span>Akun</span>
+						<strong id="profileName">Login</strong>
+					</span>
+				</a>
 				<div class="badge-cart">Keranjang: <span id="cartCount">0</span></div>
 			</div>
 		</div>
@@ -979,11 +1035,45 @@
 	<script>
 		const toRupiah = (value) => `Rp ${value.toLocaleString("id-ID")}`;
 		const shippingCost = 10000;
+		const profileLink = document.getElementById("profileLink");
+		const profileBadge = document.getElementById("profileBadge");
+		const profileName = document.getElementById("profileName");
 
 		const cartItems = Array.from(document.querySelectorAll(".cart-item"));
 		const subtotalEl = document.getElementById("subtotal");
 		const grandTotalEl = document.getElementById("grandTotal");
 		const cartCountEl = document.getElementById("cartCount");
+
+		function setProfileNav() {
+			try {
+				const storedUser = localStorage.getItem("user");
+				if (!storedUser) {
+					profileLink.href = "/login.html";
+					profileLink.setAttribute("aria-label", "Masuk ke akun");
+					profileBadge.textContent = "?";
+					profileName.textContent = "Login";
+					return;
+				}
+
+				const user = JSON.parse(storedUser);
+				const displayName = user?.name || user?.email || "Profil";
+				const initials = displayName
+					.split(/\s+/)
+					.filter(Boolean)
+					.slice(0, 2)
+					.map((part) => part.charAt(0).toUpperCase())
+					.join("") || "P";
+
+				profileLink.href = "/profile.html";
+				profileLink.setAttribute("aria-label", `Buka profil ${displayName}`);
+				profileBadge.textContent = initials;
+				profileName.textContent = displayName.length > 14 ? `${displayName.slice(0, 14)}...` : displayName;
+			} catch (error) {
+				profileLink.href = "/login.html";
+				profileBadge.textContent = "?";
+				profileName.textContent = "Login";
+			}
+		}
 
 		function updateCartSummary() {
 			let subtotal = 0;
@@ -1026,6 +1116,7 @@
 			document.getElementById("checkoutStatus").textContent = "Checkout berhasil disimpan. Tim kami akan menghubungi kamu untuk konfirmasi.";
 		});
 
+		setProfileNav();
 		updateCartSummary();
 	</script>
 </body>
