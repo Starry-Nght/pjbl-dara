@@ -428,9 +428,9 @@
 					localStorage.setItem('user', JSON.stringify(data.user));
 					
 					// Redirect based on role
-					let redirectUrl = '/home.html';
+					let redirectUrl = 'home.html';
 					if (data.user && data.user.role === 'admin') {
-						redirectUrl = '/ADMINDara.html';
+						redirectUrl = 'ADMINDara.html';
 					}
 					
 					// Redirect after a short delay
