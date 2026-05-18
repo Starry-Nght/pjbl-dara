@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Pembayaran - Dara Catering</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					fontFamily: {
+						sans: ["Manrope", "sans-serif"],
+					},
+					colors: {
+						brand: "#c96d1d",
+						brandDark: "#8b2f16",
+						ink: "#131313",
+					},
+				},
+			},
+		};
+	</script>
+</head>
+<body class="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,220,185,0.95),_transparent_35%),radial-gradient(circle_at_top_right,_rgba(210,160,120,0.35),_transparent_30%),linear-gradient(180deg,_#fffaf5_0%,_#f8efe6_45%,_#f3e4d3_100%)] font-sans text-ink">
+	<div class="pointer-events-none fixed inset-0 -z-10 opacity-30 [background-image:linear-gradient(rgba(201,109,29,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(201,109,29,0.08)_1px,transparent_1px)] [background-size:32px_32px]"></div>
+
+	<header class="sticky top-0 z-50 border-b border-white/50 bg-brand/95 shadow-[0_10px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+		<div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+			<a href="home.html" class="flex items-center gap-3 text-white">
+				<div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25">
+					<span class="text-lg font-extrabold">D</span>
+				</div>
+				<div>
+					<p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/75">Dara Catering</p>
+					<h1 class="text-lg font-extrabold leading-tight">Halaman Pembayaran</h1>
+				</div>
+			</a>
+			<div class="hidden items-center gap-2 rounded-full bg-white/12 px-4 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 md:flex">
+				<span class="h-2.5 w-2.5 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.8)]"></span>
+				Transaksi aman dan cepat
+			</div>
+		</div>
+	</header>
+
+	<main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+		<section class="mb-6 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
+			<div class="rounded-[28px] border border-white/70 bg-white/75 p-5 shadow-[0_20px_50px_rgba(139,47,22,0.08)] backdrop-blur-2xl sm:p-6">
+				<div class="flex flex-wrap items-center gap-3">
+					<span class="rounded-full bg-brand/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-brandDark">Checkout</span>
+					<span id="orderBadge" class="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-brandDark ring-1 ring-amber-200">Menyiapkan pesanan...</span>
+				</div>
+				<div class="mt-4 grid gap-4 md:grid-cols-[1.2fr_0.8fr] md:items-end">
+					<div>
+						<h2 class="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Bayar pesanan dengan tampilan yang rapi dan jelas.</h2>
+						<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">Halaman ini membaca draft checkout dari halaman utama, lalu menampilkan rincian pesanan, metode pembayaran, dan ringkasan total yang siap dikonfirmasi.</p>
+					</div>
+					<div class="grid gap-3 rounded-[24px] bg-[linear-gradient(135deg,rgba(201,109,29,0.12),rgba(255,255,255,0.95))] p-4 ring-1 ring-white/80">
+						<div class="flex items-center justify-between text-sm text-slate-600"><span>No. Pesanan</span><strong id="orderNumber" class="text-ink">-</strong></div>
+						<div class="flex items-center justify-between text-sm text-slate-600"><span>Pelanggan</span><strong id="customerName" class="text-ink">-</strong></div>
+						<div class="flex items-center justify-between text-sm text-slate-600"><span>Metode</span><strong id="selectedMethodLabel" class="text-ink">-</strong></div>
+					</div>
+				</div>
+			</div>
+			<div class="rounded-[28px] border border-brand/10 bg-[linear-gradient(180deg,rgba(201,109,29,0.98),rgba(139,47,22,0.96))] p-5 text-white shadow-[0_20px_50px_rgba(139,47,22,0.22)] sm:p-6">
+				<p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">Ringkasan</p>
+				<div class="mt-3 grid gap-3">
+					<div class="flex items-center justify-between rounded-2xl bg-white/12 px-4 py-3 ring-1 ring-white/15"><span class="text-sm text-white/80">Subtotal</span><strong id="subtotalValue" class="text-lg">Rp 0</strong></div>
+					<div class="flex items-center justify-between rounded-2xl bg-white/12 px-4 py-3 ring-1 ring-white/15"><span class="text-sm text-white/80">Biaya kirim</span><strong id="shippingValue" class="text-lg">Rp 10.000</strong></div>
+					<div class="flex items-center justify-between rounded-2xl bg-white/15 px-4 py-4 ring-1 ring-white/20"><span class="text-sm font-semibold text-white/80">Total</span><strong id="grandTotalValue" class="text-2xl font-extrabold">Rp 0</strong></div>
+				</div>
+				<div class="mt-4 rounded-2xl bg-black/15 p-4 text-sm leading-6 text-white/85 ring-1 ring-white/10">
+					<p class="font-semibold text-white">Status pembayaran</p>
+					<p id="statusText" class="mt-1">Menunggu konfirmasi dari pelanggan.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="grid gap-6 lg:grid-cols-[1fr_0.88fr]">
+			<div class="space-y-6">
+				<div class="rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.08)] backdrop-blur-2xl sm:p-6">
+					<div class="flex items-center justify-between gap-3">
+						<div>
+							<p class="text-xs font-bold uppercase tracking-[0.3em] text-brandDark">Detail Pesanan</p>
+							<h3 class="mt-2 text-2xl font-extrabold text-ink">Daftar menu yang dipilih</h3>
+						</div>
+						<div class="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 md:block" id="itemCount">0 item</div>
+					</div>
+					<div id="itemsList" class="mt-4 grid gap-3"></div>
+					<div id="emptyState" class="hidden rounded-[22px] border border-dashed border-brand/30 bg-brand/5 p-6 text-center text-slate-600">
+						<p class="text-lg font-bold text-ink">Belum ada draft pesanan.</p>
+						<p class="mt-2 text-sm">Kembali ke halaman utama untuk memilih menu dan tekan Bayar Sekarang.</p>
+						<a href="home.html" class="mt-4 inline-flex items-center justify-center rounded-full bg-brand px-5 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#b65f11]">Kembali ke Home</a>
+					</div>
+				</div>
+
+				<div class="grid gap-4 sm:grid-cols-2">
+					<div class="rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.08)] backdrop-blur-2xl">
+						<p class="text-xs font-bold uppercase tracking-[0.3em] text-brandDark">Alamat Kirim</p>
+						<p id="addressText" class="mt-3 text-sm leading-6 text-slate-700">-</p>
+					</div>
+					<div class="rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.08)] backdrop-blur-2xl">
+						<p class="text-xs font-bold uppercase tracking-[0.3em] text-brandDark">Jadwal</p>
+						<div class="mt-3 space-y-2 text-sm text-slate-700">
+							<p>Estimasi proses: <strong>10-15 menit</strong></p>
+							<p>Konfirmasi via: <strong>WhatsApp</strong></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="space-y-6">
+				<div class="rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.08)] backdrop-blur-2xl sm:p-6">
+					<div class="flex items-center justify-between gap-3">
+						<div>
+							<p class="text-xs font-bold uppercase tracking-[0.3em] text-brandDark">Metode Pembayaran</p>
+							<h3 class="mt-2 text-2xl font-extrabold text-ink">Pilih cara bayar</h3>
+						</div>
+						<span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">Aktif</span>
+					</div>
+
+					<div class="mt-4 grid gap-3" id="methodList">
+						<button type="button" data-method="QRIS" class="method-card group flex items-center justify-between rounded-[22px] border border-slate-200 bg-slate-50 p-4 text-left transition hover:-translate-y-0.5 hover:border-brand/30 hover:bg-white">
+							<div>
+								<p class="text-sm font-bold text-ink">QRIS</p>
+								<p class="mt-1 text-xs text-slate-500">Scan kode QR untuk pembayaran instan.</p>
+							</div>
+							<span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brandDark ring-1 ring-slate-200">Cepat</span>
+						</button>
+						<button type="button" data-method="Transfer Bank" class="method-card group flex items-center justify-between rounded-[22px] border border-slate-200 bg-slate-50 p-4 text-left transition hover:-translate-y-0.5 hover:border-brand/30 hover:bg-white">
+							<div>
+								<p class="text-sm font-bold text-ink">Transfer Bank</p>
+								<p class="mt-1 text-xs text-slate-500">Salin rekening lalu transfer manual.</p>
+							</div>
+							<span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brandDark ring-1 ring-slate-200">Rekening</span>
+						</button>
+						<button type="button" data-method="COD" class="method-card group flex items-center justify-between rounded-[22px] border border-slate-200 bg-slate-50 p-4 text-left transition hover:-translate-y-0.5 hover:border-brand/30 hover:bg-white">
+							<div>
+								<p class="text-sm font-bold text-ink">COD</p>
+								<p class="mt-1 text-xs text-slate-500">Bayar saat pesanan diterima.</p>
+							</div>
+							<span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brandDark ring-1 ring-slate-200">Tunai</span>
+						</button>
+					</div>
+
+					<div id="qrisPanel" class="mt-5 rounded-[24px] bg-[linear-gradient(180deg,rgba(255,248,241,0.9),rgba(255,255,255,1))] p-4 ring-1 ring-amber-100">
+						<div class="flex items-center justify-between gap-3">
+							<div>
+								<p class="text-sm font-bold text-ink">QRIS Ready</p>
+								<p class="text-xs text-slate-500">Scan untuk melihat instruksi pembayaran.</p>
+							</div>
+							<span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">Realtime</span>
+						</div>
+						<div id="qrGrid" class="mt-4 grid grid-cols-10 gap-1 rounded-3xl bg-white p-3 shadow-inner"></div>
+						<p class="mt-3 text-center text-xs text-slate-500">QR virtual ini dibuat via JavaScript sebagai efek visual.</p>
+					</div>
+
+					<div id="bankPanel" class="mt-5 hidden rounded-[24px] border border-brand/15 bg-brand/5 p-4">
+						<p class="text-sm font-bold text-ink">Rekening Tujuan</p>
+						<div class="mt-3 grid gap-3 text-sm text-slate-700">
+							<div class="flex items-center justify-between rounded-2xl bg-white px-4 py-3 ring-1 ring-slate-200"><span>BCA 1234567890</span><button type="button" id="copyBank" class="rounded-full bg-brand px-3 py-1 text-xs font-bold text-white transition hover:bg-[#b65f11]">Salin</button></div>
+							<p>Atas nama: <strong>Dara Catering</strong></p>
+						</div>
+					</div>
+
+					<div id="codPanel" class="mt-5 hidden rounded-[24px] border border-brand/15 bg-brand/5 p-4 text-sm text-slate-700">
+						<p class="font-bold text-ink">Pembayaran di tempat</p>
+						<p class="mt-2 leading-6">Siapkan uang pas saat kurir datang atau saat serah terima pesanan.</p>
+					</div>
+				</div>
+
+				<div class="rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.08)] backdrop-blur-2xl sm:p-6">
+					<p class="text-xs font-bold uppercase tracking-[0.3em] text-brandDark">Konfirmasi</p>
+					<label class="mt-4 block text-sm font-semibold text-slate-700" for="confirmAddress">Alamat pengiriman</label>
+					<textarea id="confirmAddress" rows="3" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-brand/40 focus:bg-white" placeholder="Masukkan alamat lengkap..."></textarea>
+					<div class="mt-4 flex flex-col gap-3 sm:flex-row">
+						<a id="backButton" href="home.html#checkout" class="inline-flex flex-1 items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:-translate-y-0.5 hover:border-brand/20 hover:text-brandDark">Kembali</a>
+						<button id="payButton" type="button" class="inline-flex flex-1 items-center justify-center rounded-2xl bg-brand px-5 py-3 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(201,109,29,0.28)] transition hover:-translate-y-0.5 hover:bg-[#b65f11]">Bayar Sekarang</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<div id="successOverlay" class="pointer-events-none fixed inset-0 z-50 hidden items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
+		<div class="w-full max-w-md rounded-[30px] border border-white/60 bg-white p-6 text-center shadow-[0_30px_80px_rgba(0,0,0,0.22)]">
+			<div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-3xl">✓</div>
+			<h3 class="mt-4 text-2xl font-extrabold text-ink">Pembayaran tersimpan</h3>
+			<p class="mt-2 text-sm leading-6 text-slate-600">Data pembayaran sudah dicatat. Tim kami akan lanjut melakukan konfirmasi pesanan.</p>
+			<div class="mt-5 flex gap-3">
+				<a href="home.html" class="flex-1 rounded-2xl bg-brand px-4 py-3 text-sm font-bold text-white transition hover:bg-[#b65f11]">Kembali ke Home</a>
+			<a href="home.html" class="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-brand/20 hover:text-brandDark">Tutup</a>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const shippingCost = 10000;
+		const ADMIN_ORDERS_KEY = "daraAdminOrders";
+		const ORDER_STORAGE = localStorage;
+		const ORDER_TTL_MS = 1000 * 60 * 60 * 6; // 6 hours expiry for demo orders
+		const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("dara-orders") : null;
+		const rupiah = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 });
+		const fallbackOrder = {
+			items: [],
+			subtotal: 0,
+			shippingCost,
+			grandTotal: shippingCost,
+			address: "",
+			paymentMethod: "QRIS",
+			customerName: "Guest",
+		};
+
+		const draftOrder = (() => {
+			try {
+				const saved = localStorage.getItem("daraDraftOrder");
+				return saved ? JSON.parse(saved) : fallbackOrder;
+			} catch (error) {
+				return fallbackOrder;
+			}
+		})();
+
+		const order = {
+			...fallbackOrder,
+			...draftOrder,
+			items: Array.isArray(draftOrder.items) ? draftOrder.items : [],
+		};
+
+		const orderBadge = document.getElementById("orderBadge");
+		const orderNumberEl = document.getElementById("orderNumber");
+		const customerNameEl = document.getElementById("customerName");
+		const selectedMethodLabelEl = document.getElementById("selectedMethodLabel");
+		const subtotalValueEl = document.getElementById("subtotalValue");
+		const shippingValueEl = document.getElementById("shippingValue");
+		const grandTotalValueEl = document.getElementById("grandTotalValue");
+		const statusTextEl = document.getElementById("statusText");
+		const addressTextEl = document.getElementById("addressText");
+		const confirmAddressEl = document.getElementById("confirmAddress");
+		const itemsListEl = document.getElementById("itemsList");
+		const emptyStateEl = document.getElementById("emptyState");
+		const itemCountEl = document.getElementById("itemCount");
+		const methodCards = Array.from(document.querySelectorAll(".method-card"));
+		const qrisPanel = document.getElementById("qrisPanel");
+		const bankPanel = document.getElementById("bankPanel");
+		const codPanel = document.getElementById("codPanel");
+		const qrGrid = document.getElementById("qrGrid");
+		const copyBankButton = document.getElementById("copyBank");
+		const payButton = document.getElementById("payButton");
+		const backButton = document.getElementById("backButton");
+		const successOverlay = document.getElementById("successOverlay");
+
+		function formatMoney(value) {
+			return rupiah.format(value || 0);
+		}
+
+		function getOrderNumber() {
+			const seed = order.createdAt ? new Date(order.createdAt).getTime() : Date.now();
+			return `DC-${String(seed).slice(-8)}`;
+		}
+
+		function readAdminOrders() {
+			try {
+				const saved = ORDER_STORAGE.getItem(ADMIN_ORDERS_KEY);
+				const parsed = saved ? JSON.parse(saved) : [];
+				const list = Array.isArray(parsed) ? parsed : [];
+				const now = Date.now();
+				const alive = list.filter((o) => {
+					try {
+						const exp = o.expiresAt ? new Date(o.expiresAt).getTime() : 0;
+						return !exp || exp > now;
+					} catch (e) {
+						return false;
+					}
+				});
+				if (alive.length !== list.length) {
+					ORDER_STORAGE.setItem(ADMIN_ORDERS_KEY, JSON.stringify(alive));
+				}
+				return alive;
+			} catch (error) {
+				return [];
+			}
+		}
+
+		function addAdminOrder(order) {
+			const list = readAdminOrders();
+			const withoutSame = list.filter((it) => it.orderNumber !== order.orderNumber);
+			withoutSame.unshift(order);
+			ORDER_STORAGE.setItem(ADMIN_ORDERS_KEY, JSON.stringify(withoutSame));
+			if (bc) bc.postMessage({ type: "new-order", order });
+		}
+
+		function clearLegacyOrderData() {
+			localStorage.removeItem(ADMIN_ORDERS_KEY);
+			localStorage.removeItem("daraLastOrder");
+			localStorage.removeItem("daraPaidOrder");
+		}
+
+		function renderQrGrid() {
+			qrGrid.innerHTML = "";
+			const pattern = [
+				1, 1, 1, 0, 1, 0, 1, 0, 1, 1,
+				1, 0, 1, 1, 0, 1, 0, 1, 1, 0,
+				1, 1, 0, 1, 1, 0, 1, 1, 0, 1,
+				0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+				1, 0, 1, 1, 0, 1, 1, 0, 1, 1,
+				0, 1, 0, 1, 1, 0, 1, 0, 1, 0,
+				1, 1, 1, 0, 1, 0, 1, 1, 0, 1,
+				1, 0, 1, 1, 0, 1, 0, 1, 1, 0,
+				1, 1, 0, 1, 1, 0, 1, 0, 1, 1,
+				0, 1, 1, 0, 1, 1, 0, 1, 0, 1,
+			];
+
+			pattern.forEach((bit) => {
+				const square = document.createElement("span");
+				square.className = `aspect-square rounded-[4px] ${bit ? "bg-slate-950" : "bg-transparent"}`;
+				qrGrid.appendChild(square);
+			});
+		}
+
+		function renderItems() {
+			itemsListEl.innerHTML = "";
+			const items = order.items || [];
+			itemCountEl.textContent = `${items.reduce((sum, item) => sum + (Number(item.qty) || 0), 0)} item`;
+
+			if (!items.length) {
+				emptyStateEl.classList.remove("hidden");
+				itemsListEl.classList.add("hidden");
+				return;
+			}
+
+			itemsListEl.classList.remove("hidden");
+			emptyStateEl.classList.add("hidden");
+
+			items.forEach((item, index) => {
+				const row = document.createElement("article");
+				row.className = "flex items-center justify-between gap-4 rounded-[22px] border border-slate-200 bg-slate-50 p-4 transition duration-300 hover:-translate-y-0.5 hover:bg-white";
+				row.innerHTML = `
+					<div class="min-w-0">
+						<p class="truncate text-base font-bold text-ink">${index + 1}. ${item.title}</p>
+						<p class="mt-1 text-xs text-slate-500">${formatMoney(Number(item.price) || 0)} / porsi</p>
+					</div>
+					<div class="shrink-0 text-right">
+						<p class="text-sm font-semibold text-slate-500">Qty</p>
+						<p class="text-lg font-extrabold text-brandDark">${item.qty}</p>
+					</div>
+				`;
+				itemsListEl.appendChild(row);
+			});
+		}
+
+		function setSelectedMethod(method) {
+			order.paymentMethod = method;
+			selectedMethodLabelEl.textContent = method;
+			methodCards.forEach((card) => {
+				const active = card.dataset.method === method;
+				card.classList.toggle("border-brand", active);
+				card.classList.toggle("bg-white", active);
+				card.classList.toggle("shadow-[0_12px_30px_rgba(201,109,29,0.12)]", active);
+				card.classList.toggle("scale-[1.01]", active);
+			});
+			qrisPanel.classList.toggle("hidden", method !== "QRIS");
+			bankPanel.classList.toggle("hidden", method !== "Transfer Bank");
+			codPanel.classList.toggle("hidden", method !== "COD");
+			statusTextEl.textContent = `Metode aktif: ${method}. Silakan lanjutkan pembayaran.`;
+		}
+
+		function pulse(element) {
+			element.classList.add("scale-[0.98]");
+			setTimeout(() => element.classList.remove("scale-[0.98]"), 120);
+		}
+
+		function syncView() {
+			const subtotal = Number(order.subtotal) || 0;
+			const total = Number(order.grandTotal) || subtotal + shippingCost;
+			const method = order.paymentMethod || "QRIS";
+			const customerName = order.customerName || order.customer?.name || "Guest";
+			const address = order.address || "Alamat belum diisi.";
+
+			orderNumberEl.textContent = getOrderNumber();
+			customerNameEl.textContent = customerName;
+			selectedMethodLabelEl.textContent = method;
+			subtotalValueEl.textContent = formatMoney(subtotal);
+			shippingValueEl.textContent = formatMoney(shippingCost);
+			grandTotalValueEl.textContent = formatMoney(total);
+			addressTextEl.textContent = address;
+			confirmAddressEl.value = order.address || "";
+			orderBadge.textContent = order.items && order.items.length ? "Draft siap dibayar" : "Belum ada pesanan";
+			statusTextEl.textContent = order.items && order.items.length ? "Pesanan sudah dimuat. Pilih metode lalu tekan Bayar Sekarang." : "Belum ada draft pesanan dari halaman utama.";
+			setSelectedMethod(method);
+		}
+
+		methodCards.forEach((card) => {
+			card.addEventListener("click", () => {
+				setSelectedMethod(card.dataset.method);
+				pulse(card);
+			});
+		});
+
+		copyBankButton.addEventListener("click", async () => {
+			try {
+				await navigator.clipboard.writeText("1234567890");
+				copyBankButton.textContent = "Tersalin";
+				setTimeout(() => {
+					copyBankButton.textContent = "Salin";
+				}, 1200);
+			} catch (error) {
+				copyBankButton.textContent = "Gagal";
+			}
+		});
+
+
+		payButton.addEventListener("click", () => {
+			const address = confirmAddressEl.value.trim();
+			if (!order.items || !order.items.length) {
+				statusTextEl.textContent = "Tidak ada pesanan untuk dibayar. Kembali ke home dan pilih menu dulu.";
+				return;
+			}
+
+			if (!address) {
+				confirmAddressEl.focus();
+				statusTextEl.textContent = "Alamat pengiriman wajib diisi.";
+				return;
+			}
+
+			const orderNumber = getOrderNumber();
+			const finalOrder = {
+				...order,
+				orderNumber,
+				address,
+				paymentMethod: order.paymentMethod,
+				status: "pending",
+				paymentStatus: "paid",
+				paidAt: new Date().toISOString(),
+			};
+
+			// add expiry and persist for admin to read across tabs
+			finalOrder.createdAt = finalOrder.createdAt || new Date().toISOString();
+			finalOrder.expiresAt = new Date(Date.now() + ORDER_TTL_MS).toISOString();
+			addAdminOrder(finalOrder);
+
+			ORDER_STORAGE.setItem("daraPaidOrder", JSON.stringify(finalOrder));
+			ORDER_STORAGE.setItem("daraLastOrder", JSON.stringify(finalOrder));
+			// remove draft from localStorage if present
+			try { localStorage.removeItem("daraDraftOrder"); } catch (e) {}
+
+			successOverlay.classList.remove("hidden");
+			successOverlay.classList.add("flex");
+			statusTextEl.textContent = "Pembayaran berhasil disimpan.";
+			payButton.textContent = "Selesai";
+			payButton.disabled = true;
+			payButton.classList.add("opacity-70", "cursor-not-allowed");
+		});
+
+		renderQrGrid();
+		renderItems();
+		syncView();
+	</script>
+</body>
+</html>

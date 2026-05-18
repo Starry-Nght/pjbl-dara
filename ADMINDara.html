@@ -534,23 +534,23 @@
 			<section class="metrics" aria-label="Ringkasan admin">
 				<article class="metric">
 					<p class="label">Orders Hari Ini</p>
-					<p class="value">0</p>
-					<p class="delta">+0% dari kemarin</p>
+					<p class="value" id="metricOrdersToday">0</p>
+					<p class="delta" id="metricOrdersDelta">Data checkout realtime</p>
 				</article>
 				<article class="metric">
 					<p class="label">Pending</p>
-					<p class="value">0</p>
+					<p class="value" id="metricPending">0</p>
 					<p class="delta">Butuh konfirmasi</p>
 				</article>
 				<article class="metric">
 					<p class="label">Pendapatan</p>
-					<p class="value">Rp 0 </p>
+					<p class="value" id="metricRevenue">Rp 0</p>
 					<p class="delta">Naik 0%</p>
 				</article>
 				<article class="metric">
 					<p class="label">Menu Aktif</p>
-					<p class="value">0</p>
-					<p class="delta">0 item</p>
+					<p class="value" id="metricMenuActive">0</p>
+					<p class="delta" id="metricMenuDelta">0 item</p>
 				</article>
 			</section>
 
@@ -567,32 +567,7 @@
 								<th>Status</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>#DC-2401</td>
-								<td>PJBL6</td>
-								<td>Buffet Gold</td>
-								<td><span class="status process">Processing</span></td>
-							</tr>
-							<tr>
-								<td>#DC-2402</td>
-								<td>PJBL6</td>
-								<td>Nasi Box Premium</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>
-							<tr>
-								<td>#DC-2403</td>
-								<td>PJBL6</td>
-								<td>Buffet Silver</td>
-								<td><span class="status process">Ready</span></td>
-							</tr>
-							<tr>
-								<td>#DC-2404</td>
-								<td>PJBL6</td>
-								<td>Gulai Rempah</td>
-								<td><span class="status cancel">Cancel</span></td>
-							</tr>
-						</tbody>
+						<tbody id="ordersTableBody"></tbody>
 					</table>
 				</div>
 
@@ -651,7 +626,7 @@
 						</div>
 					</div>
 					<div class="footer-actions">
-						<a class="btn btn-ghost" href="PJBL.html">Kembali ke User</a>
+						<a class="btn btn-ghost" href="home.html">Kembali ke User</a>
 						<button class="btn btn-primary" type="button">Tambah Menu Baru</button>
 					</div>
 				</div>
@@ -680,5 +655,221 @@
 			</section>
 		</main>
 	</div>
+
+	<script>
+		const ADMIN_ORDERS_KEY = "daraAdminOrders";
+		const LAST_ORDER_KEY = "daraLastOrder";
+		const PAID_ORDER_KEY = "daraPaidOrder";
+		const ORDER_STORAGE = localStorage;
+		const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("dara-orders") : null;
+		const rupiah = new Intl.NumberFormat("id-ID", {
+			style: "currency",
+			currency: "IDR",
+			maximumFractionDigits: 0,
+		});
+
+		const metricOrdersTodayEl = document.getElementById("metricOrdersToday");
+		const metricOrdersDeltaEl = document.getElementById("metricOrdersDelta");
+		const metricPendingEl = document.getElementById("metricPending");
+		const metricRevenueEl = document.getElementById("metricRevenue");
+		const metricMenuActiveEl = document.getElementById("metricMenuActive");
+		const metricMenuDeltaEl = document.getElementById("metricMenuDelta");
+		const ordersTableBodyEl = document.getElementById("ordersTableBody");
+		const searchInputEl = document.getElementById("adminSearch");
+
+		function normalizeOrder(order) {
+			if (!order || typeof order !== "object") {
+				return null;
+			}
+
+			const paidAt = order.paidAt || order.createdAt || new Date().toISOString();
+			const orderNumber = order.orderNumber || `DC-${String(new Date(paidAt).getTime()).slice(-8)}`;
+			const status = order.status || "pending";
+
+			return {
+				...order,
+				orderNumber,
+				status,
+				paidAt,
+				items: Array.isArray(order.items) ? order.items : [],
+			};
+		}
+
+		function readAdminOrders() {
+			try {
+				const savedList = ORDER_STORAGE.getItem(ADMIN_ORDERS_KEY);
+				const parsedList = savedList ? JSON.parse(savedList) : [];
+				const list = Array.isArray(parsedList) ? parsedList : [];
+
+				const lastOrderRaw = ORDER_STORAGE.getItem(LAST_ORDER_KEY);
+				const paidOrderRaw = ORDER_STORAGE.getItem(PAID_ORDER_KEY);
+				const lastOrder = lastOrderRaw ? JSON.parse(lastOrderRaw) : null;
+				const paidOrder = paidOrderRaw ? JSON.parse(paidOrderRaw) : null;
+
+				const merged = [
+					...list,
+					lastOrder,
+					paidOrder,
+				]
+					.map(normalizeOrder)
+					.filter(Boolean)
+					.sort((a, b) => new Date(b.paidAt).getTime() - new Date(a.paidAt).getTime());
+
+				const unique = [];
+				const seen = new Set();
+				merged.forEach((order) => {
+					if (seen.has(order.orderNumber)) {
+						return;
+					}
+					seen.add(order.orderNumber);
+					unique.push(order);
+				});
+
+				if (unique.length) {
+					ORDER_STORAGE.setItem(ADMIN_ORDERS_KEY, JSON.stringify(unique));
+				}
+
+				return unique;
+			} catch (error) {
+				return [];
+			}
+		}
+
+		// listen for new orders from other tabs
+		if (bc) {
+			bc.onmessage = (ev) => {
+				try {
+					if (!ev.data) return;
+					if (ev.data.type === "new-order") {
+						const orders = readAdminOrders();
+						renderOrdersTable(orders);
+						renderMetrics(orders);
+					}
+				} catch (e) {
+					// ignore
+				}
+			};
+		}
+
+		function clearLegacyOrderData() {
+			localStorage.removeItem(ADMIN_ORDERS_KEY);
+			localStorage.removeItem(LAST_ORDER_KEY);
+			localStorage.removeItem(PAID_ORDER_KEY);
+		}
+
+		function getMenuSummary(items) {
+			if (!Array.isArray(items) || !items.length) {
+				return "-";
+			}
+
+			const first = items[0]?.title || "Menu";
+			if (items.length === 1) {
+				return first;
+			}
+
+			return `${first} +${items.length - 1} menu`;
+		}
+
+		function mapStatusClass(status) {
+			if (status === "cancel") {
+				return "cancel";
+			}
+			if (status === "process" || status === "processing" || status === "ready") {
+				return "process";
+			}
+			return "pending";
+		}
+
+		function mapStatusLabel(status) {
+			if (status === "cancel") {
+				return "Cancel";
+			}
+			if (status === "process" || status === "processing") {
+				return "Processing";
+			}
+			if (status === "ready") {
+				return "Ready";
+			}
+			return "Pending";
+		}
+
+		function renderOrdersTable(orders) {
+			ordersTableBodyEl.innerHTML = "";
+
+			if (!orders.length) {
+				const empty = document.createElement("tr");
+				empty.innerHTML = '<td colspan="4" style="text-align:center;color:var(--muted)">Belum ada order dari halaman pembayaran.</td>';
+				ordersTableBodyEl.appendChild(empty);
+				return;
+			}
+
+			orders.slice(0, 12).forEach((order) => {
+				const row = document.createElement("tr");
+				const orderCode = order.orderNumber || "-";
+				const customer = order.customerName || "Guest";
+				const menu = getMenuSummary(order.items);
+				const statusClass = mapStatusClass(order.status);
+				const statusLabel = mapStatusLabel(order.status);
+
+				row.dataset.search = `${orderCode} ${customer} ${menu} ${statusLabel}`.toLowerCase();
+				row.innerHTML = `
+					<td>#${orderCode}</td>
+					<td>${customer}</td>
+					<td>${menu}</td>
+					<td><span class="status ${statusClass}">${statusLabel}</span></td>
+				`;
+				ordersTableBodyEl.appendChild(row);
+			});
+		}
+
+		function renderMetrics(orders) {
+			const today = new Date().toDateString();
+			const ordersToday = orders.filter((order) => {
+				const stamp = order.paidAt || order.createdAt;
+				return stamp ? new Date(stamp).toDateString() === today : false;
+			}).length;
+
+			const pending = orders.filter((order) => !order.status || order.status === "pending").length;
+			const revenue = orders.reduce((sum, order) => sum + (Number(order.grandTotal) || 0), 0);
+			const menus = new Set();
+			orders.forEach((order) => {
+				(order.items || []).forEach((item) => {
+					if (item?.title) {
+						menus.add(item.title);
+					}
+				});
+			});
+
+			metricOrdersTodayEl.textContent = String(ordersToday);
+			metricOrdersDeltaEl.textContent = orders.length ? `Total order masuk: ${orders.length}` : "Belum ada order";
+			metricPendingEl.textContent = String(pending);
+			metricRevenueEl.textContent = rupiah.format(revenue);
+			metricMenuActiveEl.textContent = String(menus.size);
+			metricMenuDeltaEl.textContent = `${menus.size} item`;
+		}
+
+		function bindSearch() {
+			searchInputEl.addEventListener("input", () => {
+				const query = searchInputEl.value.trim().toLowerCase();
+				Array.from(ordersTableBodyEl.querySelectorAll("tr")).forEach((row) => {
+					if (!query) {
+						row.style.display = "";
+						return;
+					}
+					row.style.display = row.dataset.search?.includes(query) ? "" : "none";
+				});
+			});
+		}
+
+		function initDashboard() {
+			clearLegacyOrderData();
+			const orders = readAdminOrders();
+			renderOrdersTable(orders);
+			renderMetrics(orders);
+			bindSearch();
+		}
+
+		initDashboard();
+	</script>
 </body>
 </html>

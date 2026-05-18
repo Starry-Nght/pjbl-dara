@@ -9,7 +9,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=block" rel="stylesheet" />
 	<style>
 		:root {
-			--bg: #d1d1d3;
+			--bg: #f4f4f4;
 			--surface: #f4f4f4;
 			--surface-2: #ececec;
 			--brand: #c96d1d;
@@ -36,28 +36,43 @@
 			margin: 0;
 			font-family: "Manrope", sans-serif;
 			color: var(--text);
+			position: relative;
+			isolation: isolate;
+			overflow-x: hidden;
 			background:
-				radial-gradient(1000px 500px at -20% 10%, #ece2d4 0%, transparent 70%),
-				radial-gradient(900px 450px at 120% -10%, #dbd2c8 0%, transparent 70%),
+				radial-gradient(1000px 500px at -20% 10%, rgba(236, 226, 212, 0.34) 0%, transparent 70%),
+				radial-gradient(900px 450px at 120% -10%, rgba(219, 210, 200, 0.22) 0%, transparent 70%),
 				var(--bg);
+		}
+
+		body::before {
+			content: "";
+			position: fixed;
+			inset: 0;
+			pointer-events: none;
+			z-index: -1;
+			opacity: 0.12;
+			background: url("bghome.jpg") center top / 280px auto repeat;
 		}
 
 		.navbar {
 			position: sticky;
 			top: 0;
-			z-index: 20;
-			background: var(--brand);
-			box-shadow: 0 8px 20px rgba(98, 49, 8, 0.3);
+			z-index: 60;
+			background: #c96d1d;
+			border-bottom: 1px solid rgba(0,0,0,0.1);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+			border-radius: 0 0 var(--radius-md) var(--radius-md);
 		}
 
 		.nav-inner {
 			max-width: 1240px;
 			margin: 0 auto;
-			padding: 10px clamp(14px, 3vw, 40px);
+			padding: 10px clamp(16px, 4vw, 40px);
 			display: grid;
 			grid-template-columns: auto 1fr auto;
 			align-items: center;
-			gap: 18px;
+			gap: 20px;
 		}
 
 		.brand {
@@ -77,48 +92,53 @@
 			display: flex;
 			justify-content: center;
 			flex-wrap: wrap;
-			gap: 10px;
+			gap: 12px;
+			align-items: center;
 		}
 
 		.nav-menu a {
 			text-decoration: none;
-			color: #fff3e0;
-			font-weight: 700;
-			font-size: 0.92rem;
-			padding: 9px 12px;
-			border-radius: 999px;
-			transition: 0.2s ease;
+			color: rgba(255,243,224,0.95);
+			font-weight: 600;
+			font-size: 0.9rem;
+			padding: 8px 14px;
+			border-radius: 6px;
+			transition: background 0.18s ease, color 0.15s ease, transform 0.12s ease;
 		}
 
 		.nav-menu a:hover {
-			color: white;
-			background: rgba(255, 255, 255, 0.16);
+			color: #fff;
+			background: rgba(255,255,255,0.08);
+			transform: translateY(-2px);
 		}
 
 		.nav-tools {
 			display: flex;
 			align-items: center;
-			gap: 10px;
+			gap: 12px;
 		}
 
-		.profile-link {
-			display: inline-flex;
-			align-items: center;
-			gap: 10px;
-			padding: 7px 10px 7px 8px;
-			border-radius: 999px;
-			background: rgba(255, 255, 255, 0.14);
-			color: #fff3e0;
-			text-decoration: none;
-			font-weight: 700;
-			font-size: 0.9rem;
-			transition: 0.2s ease;
-		}
+			.profile-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+				padding: 8px 12px;
+				border-radius: 12px;
+				background: rgba(255,255,255,0.06);
+				color: rgba(255,243,224,0.95);
+				text-decoration: none;
+				font-weight: 700;
+				font-size: 0.9rem;
+				backdrop-filter: blur(4px);
+				-webkit-backdrop-filter: blur(4px);
+				transition: background 0.15s ease, transform 0.12s ease;
+			}
 
-		.profile-link:hover {
-			background: rgba(255, 255, 255, 0.24);
-			color: #fff;
-		}
+			.profile-link:hover {
+				background: rgba(255,255,255,0.10);
+				transform: translateY(-2px);
+				color: #fff;
+			}
 
 		.profile-badge {
 			display: inline-flex;
@@ -174,14 +194,15 @@
 			color: #7a3f0d;
 		}
 
-		.badge-cart {
-			background: white;
-			color: var(--accent);
-			border-radius: 999px;
-			padding: 8px 14px;
-			font-size: 0.88rem;
-			font-weight: 800;
-		}
+			.badge-cart {
+				background: rgba(255,255,255,0.95);
+				color: var(--accent);
+				border-radius: 999px;
+				padding: 8px 14px;
+				font-size: 0.88rem;
+				font-weight: 800;
+				box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+			}
 
 		.page {
 			max-width: 1240px;
@@ -203,7 +224,9 @@
 			background: var(--surface);
 			border-radius: var(--radius-lg);
 			padding: 20px;
-			box-shadow: var(--shadow);
+			box-shadow: var(--shadow);background-color: rgba(255, 255, 255, 0.1); /* Warna transparan */backdrop-filter: blur(3px); /* Efek blur */
+  -webkit-backdrop-filter: blur(5px); /* Dukungan Safari */
+  
 		}
 
 		.hero-grid {
@@ -258,11 +281,12 @@
 			margin-bottom: 14px;
 		}
 
-		.menu-row {
-			display: grid;
-			grid-template-columns: repeat(4, minmax(160px, 1fr));
-			gap: 12px;
-		}
+			.menu-row {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+				gap: 16px;
+				align-items: start;
+			}
 
 		.card {
 			background: var(--surface-2);
@@ -270,16 +294,29 @@
 			overflow: hidden;
 		}
 
-		.card img {
-			width: 100%;
-			height: 142px;
-			object-fit: cover;
-			display: block;
-		}
+			.card img {
+				width: 100%;
+				height: 160px;
+				object-fit: cover;
+				display: block;
+				transition: transform 0.18s ease;
+			}
 
-		.card-body {
-			padding: 10px 12px 12px;
-		}
+			.card-body {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+				padding: 12px;
+			}
+
+			.card {
+				transition: transform 0.14s ease, box-shadow 0.14s ease;
+			}
+
+			.card:hover {
+				transform: translateY(-6px);
+				box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+			}
 
 		.card h3 {
 			font-size: 1rem;
@@ -367,24 +404,42 @@
 			margin: 0;
 		}
 
-		.btn {
-			border: 0;
-			border-radius: 10px;
-			padding: 11px 13px;
-			font: inherit;
-			font-weight: 800;
-			cursor: pointer;
-		}
+			.btn {
+				border: 0;
+				border-radius: 10px;
+				padding: 10px 12px;
+				font: inherit;
+				font-weight: 800;
+				cursor: pointer;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+			}
 
 		.btn-primary {
 			background: var(--brand);
 			color: #fff;
 		}
 
-		.btn-dark {
-			background: #212121;
-			color: #fff;
-		}
+			.btn-dark {
+				background: #2e2e2e;
+				color: #fff;
+			}
+
+			.add-btn {
+				background: var(--brand);
+				color: #fff;
+				border-radius: 10px;
+				padding: 8px 10px;
+				font-weight: 800;
+				cursor: pointer;
+				border: none;
+				align-self: start;
+			}
+
+			.card-body .add-btn {
+				margin-top: 6px;
+			}
 
 		.btn-row {
 			display: grid;
@@ -408,10 +463,13 @@
 			cursor: pointer;
 		}
 
-		.cart-list {
-			display: grid;
-			gap: 9px;
-		}
+			.cart-list {
+				display: grid;
+				gap: 10px;
+				max-height: 320px;
+				overflow: auto;
+				padding-right: 6px;
+			}
 
 		.cart-item {
 			display: grid;
@@ -442,6 +500,21 @@
 			display: grid;
 			gap: 6px;
 		}
+
+			/* make the entire sidebar sticky on larger screens so cart+checkout stay visible */
+			.side-col {
+				position: sticky;
+				top: 90px;
+				align-self: start;
+			}
+
+			/* disable sticky on small screens to avoid layout issues */
+			@media (max-width: 740px) {
+				.side-col {
+					position: static;
+					top: auto;
+				}
+			}
 
 		.summary div {
 			display: flex;
@@ -902,7 +975,10 @@
 						<strong id="profileName">Login</strong>
 					</span>
 				</a>
-				<div class="badge-cart">Keranjang: <span id="cartCount">0</span></div>
+				<a class="badge-cart" href="#cart" aria-label="Buka keranjang" style="display:inline-flex;align-items:center;justify-content:center;position:relative;min-width:46px;min-height:46px;padding:0 12px;text-decoration:none;">
+					<span style="font-size:1.2rem;line-height:1;">🛒</span>
+					<span id="cartCount" style="position:absolute;right:-6px;top:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:#b3262d;color:#fff;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;">0</span>
+				</a>
 			</div>
 		</div>
 	</nav>
@@ -933,33 +1009,135 @@
 
 			<section class="panel" id="menu">
 				<h2 class="section-title">Menu Pilihan</h2>
-				<div class="menu-row">
-					<article class="card">
+				<div class="menu-row" id="menuGrid">
+					<!-- 16 makanan sebagai pilihan, masing-masing punya tombol tambah -->
+					<article class="card" data-id="1" data-price="25000">
 						<img src="https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?auto=format&fit=crop&w=900&q=80" alt="Buffet Silver" />
 						<div class="card-body">
 							<h3>Buffet Silver</h3>
 							<p class="price">Rp 25.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
 						</div>
 					</article>
-					<article class="card">
+					<article class="card" data-id="2" data-price="35000">
 						<img src="https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?auto=format&fit=crop&w=900&q=80" alt="Buffet Gold" />
 						<div class="card-body">
 							<h3>Buffet Gold</h3>
 							<p class="price">Rp 35.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
 						</div>
 					</article>
-					<article class="card">
+					<article class="card" data-id="3" data-price="32000">
 						<img src="https://images.unsplash.com/photo-1596797038530-2c107aa0f22b?auto=format&fit=crop&w=900&q=80" alt="Gulai Rempah" />
 						<div class="card-body">
 							<h3>Gulai Rempah</h3>
 							<p class="price">Rp 32.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
 						</div>
 					</article>
-					<article class="card">
+					<article class="card" data-id="4" data-price="30000">
 						<img src="https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=900&q=80" alt="Nasi Box Premium" />
 						<div class="card-body">
 							<h3>Nasi Box Premium</h3>
 							<p class="price">Rp 30.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<!-- tambahan sampai 16 -->
+					<article class="card" data-id="5" data-price="18000">
+						<img src="https://images.unsplash.com/photo-1498654200761-90f1b6b8d4d0?auto=format&fit=crop&w=900&q=80" alt="Ayam Goreng" />
+						<div class="card-body">
+							<h3>Ayam Goreng</h3>
+							<p class="price">Rp 18.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="6" data-price="15000">
+						<img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=80" alt="Nasi Goreng" />
+						<div class="card-body">
+							<h3>Nasi Goreng</h3>
+							<p class="price">Rp 15.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="7" data-price="12000">
+						<img src="https://images.unsplash.com/photo-1604908177071-6c0b2f9e5a2c?auto=format&fit=crop&w=900&q=80" alt="Mie Ayam" />
+						<div class="card-body">
+							<h3>Mie Ayam</h3>
+							<p class="price">Rp 12.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="8" data-price="14000">
+						<img src="https://images.unsplash.com/photo-1604908177059-1c3d7b3a6e3b?auto=format&fit=crop&w=900&q=80" alt="Soto" />
+						<div class="card-body">
+							<h3>Soto</h3>
+							<p class="price">Rp 14.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="9" data-price="20000">
+						<img src="https://images.unsplash.com/photo-1543352634-abc51d9f1fa7?auto=format&fit=crop&w=900&q=80" alt="Steak" />
+						<div class="card-body">
+							<h3>Steak</h3>
+							<p class="price">Rp 20.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="10" data-price="10000">
+						<img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80" alt="Bakwan" />
+						<div class="card-body">
+							<h3>Bakwan</h3>
+							<p class="price">Rp 10.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="11" data-price="8000">
+						<img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=900&q=80" alt="Kentang" />
+						<div class="card-body">
+							<h3>Perkedel</h3>
+							<p class="price">Rp 8.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="12" data-price="9000">
+						<img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80" alt="Sayur" />
+						<div class="card-body">
+							<h3>Tumis Sayur</h3>
+							<p class="price">Rp 9.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="13" data-price="6000">
+						<img src="https://images.unsplash.com/photo-1527515637466-9353a0c9f1c2?auto=format&fit=crop&w=900&q=80" alt="Kerupuk" />
+						<div class="card-body">
+							<h3>Kerupuk</h3>
+							<p class="price">Rp 6.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="14" data-price="7000">
+						<img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80" alt="Sambal" />
+						<div class="card-body">
+							<h3>Sambal</h3>
+							<p class="price">Rp 7.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="15" data-price="5000">
+						<img src="https://images.unsplash.com/photo-1504674900247-abcdef9cc836?auto=format&fit=crop&w=900&q=80" alt="Keripik" />
+						<div class="card-body">
+							<h3>Keripik</h3>
+							<p class="price">Rp 5.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
+						</div>
+					</article>
+					<article class="card" data-id="16" data-price="11000">
+						<img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80" alt="Dessert" />
+						<div class="card-body">
+							<h3>Dessert</h3>
+							<p class="price">Rp 11.000 / porsi</p>
+							<button class="btn btn-dark add-btn">Tambah</button>
 						</div>
 					</article>
 				</div>
@@ -969,35 +1147,14 @@
 		<aside class="side-col">
 			<section class="panel" id="cart">
 				<h2 class="section-title">Cart</h2>
-				<div class="cart-list">
-					<article class="cart-item" data-price="25000">
-						<div>
-							<h4>Buffet Silver</h4>
-							<p>Rp 25.000 / porsi</p>
-						</div>
-						<div class="qty">
-							<button type="button" class="decrease">-</button>
-							<span class="qty-value">1</span>
-							<button type="button" class="increase">+</button>
-						</div>
-					</article>
-					<article class="cart-item" data-price="32000">
-						<div>
-							<h4>Gulai Rempah</h4>
-							<p>Rp 32.000 / porsi</p>
-						</div>
-						<div class="qty">
-							<button type="button" class="decrease">-</button>
-							<span class="qty-value">1</span>
-							<button type="button" class="increase">+</button>
-						</div>
-					</article>
+				<div class="cart-list" id="cartList">
+					<!-- Kosong, akan diisi secara dinamis saat user menambahkan -->
 				</div>
 
 				<div class="summary">
-					<div><span>Subtotal</span><strong id="subtotal">Rp 57.000</strong></div>
+					<div><span>Subtotal</span><strong id="subtotal">Rp 0</strong></div>
 					<div><span>Biaya kirim</span><strong>Rp 10.000</strong></div>
-					<div class="total"><span>Total</span><strong id="grandTotal">Rp 67.000</strong></div>
+					<div class="total"><span>Total</span><strong id="grandTotal">Rp 10.000</strong></div>
 				</div>
 			</section>
 
@@ -1039,10 +1196,13 @@
 		const profileBadge = document.getElementById("profileBadge");
 		const profileName = document.getElementById("profileName");
 
-		const cartItems = Array.from(document.querySelectorAll(".cart-item"));
+		// Dynamic cart state: { id: { id, title, price, qty } }
+		const cart = {};
 		const subtotalEl = document.getElementById("subtotal");
 		const grandTotalEl = document.getElementById("grandTotal");
 		const cartCountEl = document.getElementById("cartCount");
+		const cartListEl = document.getElementById("cartList");
+		const MIN_ITEMS = 15;
 
 		function setProfileNav() {
 			try {
@@ -1079,11 +1239,9 @@
 			let subtotal = 0;
 			let totalQty = 0;
 
-			cartItems.forEach((item) => {
-				const price = Number(item.dataset.price);
-				const qty = Number(item.querySelector(".qty-value").textContent);
-				subtotal += price * qty;
-				totalQty += qty;
+			Object.values(cart).forEach((it) => {
+				subtotal += it.price * it.qty;
+				totalQty += it.qty;
 			});
 
 			subtotalEl.textContent = toRupiah(subtotal);
@@ -1091,29 +1249,111 @@
 			cartCountEl.textContent = String(totalQty);
 		}
 
-		cartItems.forEach((item) => {
-			const qtyEl = item.querySelector(".qty-value");
-			const decreaseBtn = item.querySelector(".decrease");
-			const increaseBtn = item.querySelector(".increase");
+		// Add button handlers for menu items
+		document.querySelectorAll(".add-btn").forEach((btn) => {
+			btn.addEventListener("click", (e) => {
+				const card = e.target.closest(".card");
+				const id = card.dataset.id;
+				const price = Number(card.dataset.price);
+				const title = card.querySelector("h3").textContent;
 
-			decreaseBtn.addEventListener("click", () => {
-				const current = Number(qtyEl.textContent);
-				if (current > 1) {
-					qtyEl.textContent = String(current - 1);
-					updateCartSummary();
+				if (!cart[id]) {
+					cart[id] = { id, title, price, qty: 0 };
 				}
-			});
-
-			increaseBtn.addEventListener("click", () => {
-				const current = Number(qtyEl.textContent);
-				qtyEl.textContent = String(current + 1);
+				cart[id].qty += 1;
+				renderCartList();
 				updateCartSummary();
 			});
 		});
 
+		function renderCartList() {
+			cartListEl.innerHTML = "";
+			Object.values(cart).forEach((it) => {
+				const node = document.createElement("article");
+				node.className = "cart-item";
+				node.dataset.price = String(it.price);
+				node.innerHTML = `
+					<div>
+						<h4>${it.title}</h4>
+						<p>${toRupiah(it.price)} / porsi</p>
+					</div>
+					<div class="qty">
+						<button type="button" class="decrease">-</button>
+						<span class="qty-value">${it.qty}</span>
+						<button type="button" class="increase">+</button>
+						<button type="button" class="remove" style="margin-left:8px">Hapus</button>
+					</div>
+				`;
+				cartListEl.appendChild(node);
+
+				const decrease = node.querySelector(".decrease");
+				const increase = node.querySelector(".increase");
+				const remove = node.querySelector(".remove");
+
+				decrease.addEventListener("click", () => {
+					if (it.qty > 1) {
+						it.qty -= 1;
+					} else {
+						delete cart[it.id];
+					}
+					renderCartList();
+					updateCartSummary();
+				});
+
+				increase.addEventListener("click", () => {
+					it.qty += 1;
+					renderCartList();
+					updateCartSummary();
+				});
+
+				remove.addEventListener("click", () => {
+					delete cart[it.id];
+					renderCartList();
+					updateCartSummary();
+				});
+			});
+		}
+
 		document.getElementById("checkoutForm").addEventListener("submit", (event) => {
 			event.preventDefault();
-			document.getElementById("checkoutStatus").textContent = "Checkout berhasil disimpan. Tim kami akan menghubungi kamu untuk konfirmasi.";
+			const totalQty = Number(cartCountEl.textContent) || 0;
+			const statusEl = document.getElementById("checkoutStatus");
+			const address = document.getElementById("alamat").value.trim();
+			const paymentMethod = document.getElementById("metode").value;
+			if (totalQty < MIN_ITEMS) {
+				statusEl.style.color = "#d9534f";
+				statusEl.textContent = `Silakan pilih minimal ${MIN_ITEMS} makanan. Saat ini: ${totalQty}`;
+				return;
+			}
+
+			if (!address) {
+				statusEl.style.color = "#d9534f";
+				statusEl.textContent = "Alamat pengiriman wajib diisi.";
+				return;
+			}
+
+			const items = Object.values(cart).map((item) => ({
+				id: item.id,
+				title: item.title,
+				price: item.price,
+				qty: item.qty,
+			}));
+			const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
+			const draftOrder = {
+				items,
+				subtotal,
+				shippingCost,
+				grandTotal: subtotal + shippingCost,
+				address,
+				paymentMethod,
+				customerName: profileName.textContent === "Login" ? "Guest" : profileName.textContent,
+				createdAt: new Date().toISOString(),
+			};
+
+			localStorage.setItem("daraDraftOrder", JSON.stringify(draftOrder));
+			statusEl.style.color = "var(--good)";
+			statusEl.textContent = "Mengarahkan ke halaman pembayaran...";
+			window.location.href = "./pembayaran.html";
 		});
 
 		setProfileNav();
