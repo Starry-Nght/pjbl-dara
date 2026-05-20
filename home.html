@@ -1202,7 +1202,7 @@
 		const grandTotalEl = document.getElementById("grandTotal");
 		const cartCountEl = document.getElementById("cartCount");
 		const cartListEl = document.getElementById("cartList");
-		const MIN_ITEMS = 15;
+		const MIN_ITEMS = 1;
 
 		function setProfileNav() {
 			try {
@@ -1322,7 +1322,7 @@
 			const paymentMethod = document.getElementById("metode").value;
 			if (totalQty < MIN_ITEMS) {
 				statusEl.style.color = "#d9534f";
-				statusEl.textContent = `Silakan pilih minimal ${MIN_ITEMS} makanan. Saat ini: ${totalQty}`;
+				statusEl.textContent = `Silakan pilih minimal ${MIN_ITEMS} makanan.Saat ini: ${totalQty}`;
 				return;
 			}
 
